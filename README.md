@@ -21,3 +21,9 @@ Python, Git, GitHub
 
 ## Development Workflow
 Pengembangan menggunakan feature branch, meaningful commit, dan merge ke main.
+ 
+## Team
+- Yasmin
+
+## Development Workflow
+Pengembangan menggunakan feature branch, meaningful commit, dan merge ke main.
