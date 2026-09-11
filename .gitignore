@@ -1,10 +1,11 @@
 venv/
 .venv/
-pycache /
+__pycache__/
 *.pyc
 .env
 .vscode/
 .idea/
+.ipynb_checkpoints/
 .DS_Store
 data/raw/*
 !data/raw/.gitkeep
