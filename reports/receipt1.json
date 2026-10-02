@@ -1,0 +1,29 @@
+{
+  "merchant": "PT.KING FOOD",
+  "tanggal": "14.09.16",
+  "item": [
+    {
+      "nama": "S/ROTI KRIM KEJU",
+      "harga": 4500,
+      "jumlah": 4
+    },
+    {
+      "nama": "CIMORY MIX BERRY",
+      "harga": 8500,
+      "jumlah": 1
+    },
+    {
+      "nama": "CAFELA EXPRESO",
+      "harga": 3500,
+      "jumlah": 1
+    },
+    {
+      "nama": "FF LOW FAT VAN",
+      "harga": 5200,
+      "jumlah": 1
+    }
+  ],
+  "subtotal": 48700,
+  "pajak": 0,
+  "total": 33900
+}
