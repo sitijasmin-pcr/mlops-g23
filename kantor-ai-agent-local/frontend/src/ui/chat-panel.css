@@ -1,0 +1,9 @@
+.attachment-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.attachment-item{position:relative;display:flex;align-items:center;gap:6px;max-width:100%;padding:4px 26px 4px 4px;border:1px solid #d9e0d2;border-radius:7px;background:#fff}
+.attachment-item img{width:34px;height:34px;object-fit:cover;border-radius:4px}
+.attachment-item span{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#526253}
+.attachment-item button{position:absolute;right:4px;top:4px;background:transparent;color:#768672;font-size:16px}
+.message-image{display:block;max-width:100%;max-height:220px;object-fit:contain;margin-top:8px;border-radius:7px}
+#attach{background:#edf1e7;color:#345b45;margin-right:auto}
+#chat-form .compose-bottom{gap:6px;align-items:center;flex-wrap:wrap}
+#chat-form>small{display:block;line-height:1.5}

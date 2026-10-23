@@ -1,0 +1,13 @@
+services:
+  kantor:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      LM_STUDIO_URL: http://host.docker.internal:1234/v1
+      LM_STUDIO_MODEL: ${LM_STUDIO_MODEL:-qwen}
+      MAX_TOKENS: ${MAX_TOKENS:-700}
+      TEMPERATURE: ${TEMPERATURE:-0.7}
+      FRONTEND_ORIGIN: http://localhost:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
