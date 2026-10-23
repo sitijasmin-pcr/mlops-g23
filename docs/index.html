@@ -1,11 +1,27 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Receipt AI Chat</title>
+  <meta name="theme-color" content="#0b1020">
+  <title>Receipt AI — Intelligent Assistant</title>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #090d19;
+      --panel: #101629;
+      --panel-light: #161e35;
+      --border: rgba(255,255,255,.09);
+      --text: #f4f6ff;
+      --muted: #929bb7;
+      --purple: #8b7cff;
+      --blue: #63b3ff;
+      --green: #56e6b0;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -13,261 +29,688 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #f4f6fb;
-      color: #202438;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 15% 5%, rgba(103,80,255,.16), transparent 35%),
+        radial-gradient(ellipse at 90% 90%, rgba(47,146,255,.12), transparent 35%),
+        var(--bg);
+    }
+
+    button, textarea {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
     }
 
     .app {
-      width: 100%;
-      max-width: 900px;
-      height: min(780px, 92vh);
-      min-height: 500px;
       display: flex;
+      width: 100%;
+      max-width: 1250px;
+      height: min(850px, 94vh);
+      min-height: 570px;
       overflow: hidden;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 12px 40px rgba(30, 40, 80, 0.12);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: rgba(13,18,34,.94);
+      box-shadow: 0 30px 100px rgba(0,0,0,.42);
     }
 
+    /* SIDEBAR */
+
     .sidebar {
-      width: 245px;
-      padding: 25px 18px;
-      background: #222846;
-      color: white;
+      width: 255px;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 25px 17px;
+      border-right: 1px solid var(--border);
+      background: rgba(13,18,34,.8);
     }
 
     .brand {
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 7px;
     }
 
-    .subtitle {
-      color: #c7cce3;
-      font-size: 12px;
-      line-height: 1.6;
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      border-radius: 14px;
+      color: white;
+      font-size: 22px;
+      background: linear-gradient(135deg, #9b83ff, #5578f5);
+      box-shadow: 0 7px 25px rgba(113,99,255,.3);
+    }
+
+    .brand h2 {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 17px;
+      letter-spacing: -.6px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .sidebar-label {
+      margin: 33px 8px 12px;
+      color: #78829f;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
     }
 
     .new-chat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
       width: 100%;
-      margin-top: 30px;
       padding: 12px;
-      border: 1px solid #60698f;
-      border-radius: 10px;
-      background: #303858;
-      color: white;
+      border: 1px solid rgba(151,132,255,.45);
+      border-radius: 12px;
+      color: #e7e2ff;
+      background: linear-gradient(110deg, rgba(127,104,255,.19), rgba(81,127,255,.1));
       cursor: pointer;
-      text-align: left;
-      font-size: 14px;
+      transition: .2s;
     }
 
     .new-chat:hover {
-      background: #414b72;
+      background: rgba(139,124,255,.27);
+      transform: translateY(-1px);
     }
 
-    .status {
-      margin-top: 28px;
-      padding: 12px;
+    .feature-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px;
       border-radius: 10px;
-      background: rgba(255,255,255,0.08);
-      color: #dce2f8;
-      font-size: 12px;
-      line-height: 1.8;
+      color: #c4cbe0;
+      font-size: 13px;
     }
 
-    .status-dot {
-      display: inline-block;
+    .feature-icon {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255,255,255,.06);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .system-card {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.025);
+    }
+
+    .system-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 13px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .system-dot {
       width: 8px;
       height: 8px;
-      margin-right: 6px;
+      flex-shrink: 0;
       border-radius: 50%;
-      background: #f2bd62;
+      background: #e8b65f;
+      box-shadow: 0 0 10px rgba(232,182,95,.3);
     }
+
+    .system-dot.online {
+      background: var(--green);
+      box-shadow: 0 0 10px rgba(86,230,176,.4);
+    }
+
+    .system-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .system-row strong {
+      color: #d9def1;
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      padding: 16px 5px 0;
+      color: #707b99;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    /* MAIN */
 
     .main {
       min-width: 0;
       flex: 1;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     .header {
-      padding: 20px 25px;
-      border-bottom: 1px solid #edf0f5;
+      min-height: 79px;
+      padding: 16px 27px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(16,22,41,.72);
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-brand {
+      display: none;
     }
 
     .header h1 {
-      margin: 0 0 5px;
-      font-size: 19px;
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
     }
 
     .header p {
-      margin: 0;
-      color: #858ba0;
-      font-size: 12px;
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 11px;
     }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid rgba(86,230,176,.17);
+      border-radius: 20px;
+      color: #8ce9c4;
+      background: rgba(86,230,176,.06);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .header-status .system-dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    /* CHAT AREA */
 
     .messages {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
-      padding: 25px;
+      padding: 28px clamp(16px, 5%, 65px);
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 23px;
+      scroll-behavior: smooth;
+    }
+
+    .messages::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: #343d59;
     }
 
     .welcome {
+      width: 100%;
+      max-width: 630px;
       margin: auto;
-      max-width: 420px;
+      padding: 20px 0;
       text-align: center;
-      color: #777e95;
-      line-height: 1.7;
+      animation: appear .5s ease;
     }
 
-    .welcome .emoji {
-      font-size: 42px;
+    .welcome-orb {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 25px;
+      border: 1px solid rgba(163,145,255,.3);
+      border-radius: 29px;
+      font-size: 40px;
+      background: linear-gradient(145deg, #29244e, #152b50);
+      box-shadow: 0 0 60px rgba(112,94,255,.14);
+    }
+
+    .welcome-orb::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border: 1px solid rgba(139,124,255,.13);
+      border-radius: 35px;
+    }
+
+    .eyebrow {
+      color: #a99aff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .welcome h2 {
-      color: #292f4b;
-      font-size: 23px;
-      margin-bottom: 8px;
+      margin: 13px 0 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(25px, 3.3vw, 36px);
+      line-height: 1.3;
+      letter-spacing: -1.4px;
+    }
+
+    .gradient-text {
+      color: #a69aff;
+      background: linear-gradient(90deg, #b6a6ff, #70c9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome > p {
+      max-width: 430px;
+      margin: 0 auto;
+      color: #939db9;
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .suggestion {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: var(--text);
+      background: rgba(255,255,255,.025);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .suggestion:hover {
+      border-color: rgba(139,124,255,.5);
+      background: rgba(139,124,255,.08);
+      transform: translateY(-2px);
+    }
+
+    .suggestion .suggestion-icon {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 19px;
+    }
+
+    .suggestion strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .suggestion small {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* MESSAGE BUBBLES */
+
+    .message-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      animation: appear .25s ease;
+    }
+
+    .message-row.user-row {
+      justify-content: flex-end;
+    }
+
+    .avatar {
+      width: 33px;
+      height: 33px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel-light);
+      font-size: 15px;
+    }
+
+    .avatar.ai-avatar {
+      border-color: rgba(139,124,255,.24);
+      background: linear-gradient(135deg, #382e68, #203c62);
+    }
+
+    .message-content {
+      min-width: 0;
+      max-width: 85%;
+    }
+
+    .message-meta {
+      margin: 2px 0 8px;
+      color: #a7b0c9;
+      font-size: 11px;
+    }
+
+    .user-row .message-meta {
+      text-align: right;
     }
 
     .message {
-      max-width: 82%;
-      padding: 13px 16px;
-      border-radius: 15px;
-      font-size: 14px;
-      line-height: 1.7;
-      overflow-wrap: anywhere;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 4px 16px 16px 16px;
+      color: #e3e8f7;
+      background: #151d32;
+      font-size: 13px;
+      line-height: 1.9;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
-    .user {
-      align-self: flex-end;
-      color: white;
-      background: #5968d9;
-      border-bottom-right-radius: 4px;
+    .user-row .message {
+      border-color: rgba(139,124,255,.25);
+      border-radius: 16px 4px 16px 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #6558c6, #4e60bb);
     }
 
-    .assistant {
-      align-self: flex-start;
-      color: #343951;
-      background: #f0f2f8;
-      border-bottom-left-radius: 4px;
+    .error-message {
+      border-color: rgba(255,113,133,.25);
+      background: rgba(255,113,133,.06);
+      color: #ffc3cb;
     }
+
+    .typing {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 26px;
+    }
+
+    .typing span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #a99aff;
+      animation: typing 1s infinite ease-in-out;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: .15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: .3s;
+    }
+
+    /* COMPOSER */
 
     .composer {
-      padding: 18px 22px;
-      border-top: 1px solid #edf0f5;
+      padding: 16px clamp(16px, 5%, 65px) 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(12,17,32,.85);
     }
 
     .input-row {
       display: flex;
       align-items: flex-end;
       gap: 10px;
-      padding: 8px;
-      border: 1px solid #e0e4ef;
-      border-radius: 14px;
-      background: #fff;
+      padding: 10px;
+      border: 1px solid #303953;
+      border-radius: 16px;
+      background: #151c30;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .input-row:focus-within {
+      border-color: rgba(139,124,255,.65);
+      box-shadow: 0 0 0 3px rgba(139,124,255,.07);
     }
 
     textarea {
       flex: 1;
       min-width: 0;
-      max-height: 120px;
-      resize: vertical;
-      padding: 10px;
-      border: none;
+      max-height: 130px;
+      resize: none;
+      padding: 9px 7px;
+      border: 0;
       outline: none;
-      font: inherit;
-      font-size: 14px;
+      color: var(--text);
+      background: transparent;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    textarea::placeholder {
+      color: #76819e;
     }
 
     .send {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 17px;
-      background: #5968d9;
-      color: white;
+      width: 43px;
+      height: 43px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(135deg, #927dff, #5c75ed);
       cursor: pointer;
-      font-weight: bold;
+      font-size: 21px;
+      transition: .2s;
     }
 
-    .send:hover {
-      background: #4554c5;
+    .send:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(110,99,255,.3);
     }
 
     .send:disabled {
-      opacity: 0.5;
+      opacity: .5;
       cursor: not-allowed;
     }
 
     .hint {
-      margin-top: 10px;
+      margin-top: 11px;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      color: #6f7a97;
+      font-size: 10px;
       text-align: center;
-      color: #9a9fb0;
-      font-size: 11px;
+      line-height: 1.7;
     }
 
-    @media (max-width: 650px) {
+    .hint span {
+      color: #9ca6c1;
+    }
+
+    .toast {
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      z-index: 5;
+      max-width: 90%;
+      padding: 11px 16px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      color: #e7eaff;
+      background: #202942;
+      font-size: 12px;
+      transform: translateX(-50%);
+      box-shadow: 0 8px 30px rgba(0,0,0,.3);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 760px) {
       body {
         padding: 0;
       }
 
       .app {
-        height: 100vh;
+        height: 100dvh;
         min-height: 0;
+        border: 0;
         border-radius: 0;
       }
 
       .sidebar {
-        width: 78px;
-        padding: 20px 10px;
-      }
-
-      .brand {
-        font-size: 12px;
-        overflow-wrap: anywhere;
-      }
-
-      .subtitle,
-      .status-text {
         display: none;
       }
 
-      .new-chat {
-        padding: 10px 5px;
-        text-align: center;
-        font-size: 11px;
-      }
-
-      .status {
-        padding: 10px 5px;
-        text-align: center;
-      }
-
       .header {
-        padding: 18px;
+        min-height: 70px;
+        padding: 13px 17px;
+      }
+
+      .mobile-brand {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #927dff, #5578f5);
+      }
+
+      .header-status {
+        padding: 7px 9px;
+        font-size: 10px;
       }
 
       .messages {
-        padding: 18px 12px;
+        padding: 20px 15px;
       }
 
-      .composer {
+      .welcome-orb {
+        width: 74px;
+        height: 74px;
+        border-radius: 24px;
+        font-size: 33px;
+      }
+
+      .welcome h2 {
+        letter-spacing: -.8px;
+      }
+
+      .suggestions {
+        gap: 8px;
+        margin-top: 23px;
+      }
+
+      .suggestion {
         padding: 12px;
       }
 
-      .message {
-        max-width: 92%;
+      .message-content {
+        max-width: 88%;
+      }
+
+      .composer {
+        padding: 12px 13px max(12px, env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (max-width: 390px) {
+      .header h1 {
+        font-size: 14px;
+      }
+
+      .header p {
+        font-size: 10px;
+      }
+
+      .header-status {
+        gap: 5px;
+        font-size: 9px;
+      }
+
+      .suggestion small {
+        font-size: 9px;
+      }
+
+      .hint {
+        font-size: 9px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
       }
     }
   </style>
@@ -275,35 +718,134 @@
 
 <body>
   <div class="app">
+
     <aside class="sidebar">
-      <div class="brand">Receipt AI</div>
-      <div class="subtitle">
-        Asisten AI untuk membantu menjawab pertanyaan dan memahami informasi.
+      <div class="brand">
+        <div class="brand-icon">✳</div>
+        <div>
+          <h2>Receipt AI</h2>
+          <small>Intelligent Assistant</small>
+        </div>
       </div>
 
-      <button class="new-chat" id="newChat">＋ Chat Baru</button>
+      <div class="sidebar-label">WORKSPACE</div>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        <span class="status-text">LM Studio</span>
-        <div class="status-text">Backend: FastAPI</div>
-        <div class="status-text">Port: 8000</div>
+      <button class="new-chat" id="newChat">
+        <span>＋</span> Percakapan Baru
+      </button>
+
+      <div class="sidebar-label">KEMAMPUAN AI</div>
+
+      <div class="feature-list">
+        <div class="feature">
+          <span class="feature-icon">✦</span>
+          <span>AI Conversation</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⌕</span>
+          <span>Analisis Informasi</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">▤</span>
+          <span>Pemahaman Dokumen</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">◈</span>
+          <span>Smart Assistance</span>
+        </div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="system-card">
+          <div class="system-heading">
+            <span class="system-dot" id="sidebarDot"></span>
+            <span>System Status</span>
+          </div>
+
+          <div class="system-row">
+            <span>Backend</span>
+            <strong id="backendStatus">Checking...</strong>
+          </div>
+          <div class="system-row">
+            <span>Framework</span>
+            <strong>FastAPI</strong>
+          </div>
+          <div class="system-row">
+            <span>AI Engine</span>
+            <strong>LM Studio</strong>
+          </div>
+          <div class="system-row">
+            <span>Port</span>
+            <strong>8000</strong>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          Receipt AI · Powered by Qwen
+        </div>
       </div>
     </aside>
 
     <main class="main">
+
       <header class="header">
-        <h1>AI Assistant</h1>
-        <p>Powered by LM Studio · Qwen</p>
+        <div class="header-title">
+          <div class="mobile-brand">✳</div>
+          <div>
+            <h1>AI Assistant</h1>
+            <p>Your intelligent conversation partner</p>
+          </div>
+        </div>
+
+        <div class="header-status">
+          <span class="system-dot" id="headerDot"></span>
+          <span id="headerStatus">AI Assistant</span>
+        </div>
       </header>
+
+      <div id="toast" class="toast hidden" role="status"></div>
 
       <section class="messages" id="messages" aria-live="polite">
         <div class="welcome" id="welcome">
-          <div class="emoji">💬</div>
-          <h2>Halo! Ada yang bisa dibantu?</h2>
+          <div class="welcome-orb">✳</div>
+
+          <div class="eyebrow">YOUR AI WORKSPACE</div>
+
+          <h2>
+            Halo, ada yang bisa<br>
+            <span class="gradient-text">aku bantu hari ini?</span>
+          </h2>
+
           <p>
-            Kirim pertanyaan untuk memulai percakapan dengan AI Assistant.
+            Mulai percakapan, tanyakan sesuatu, atau pilih salah satu
+            ide di bawah untuk mengeksplorasi kemampuan AI Assistant.
           </p>
+
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Jelaskan apa itu Artificial Intelligence dengan bahasa sederhana.">
+              <span class="suggestion-icon">✦</span>
+              <strong>Belajar sesuatu</strong>
+              <small>Jelaskan konsep yang ingin aku pahami</small>
+            </button>
+
+            <button class="suggestion" data-prompt="Bantu aku membuat rencana kerja yang produktif dan terstruktur.">
+              <span class="suggestion-icon">◷</span>
+              <strong>Rencana produktif</strong>
+              <small>Susun langkah kerja yang lebih terarah</small>
+            </button>
+
+            <button class="suggestion" data-prompt="Bantu aku menganalisis suatu masalah secara sistematis dan berikan beberapa solusi.">
+              <span class="suggestion-icon">⌕</span>
+              <strong>Analisis masalah</strong>
+              <small>Temukan solusi secara bertahap</small>
+            </button>
+
+            <button class="suggestion" data-prompt="Apa saja yang bisa kamu bantu terkait pemrograman, pengolahan data, dan teknologi? Berikan contoh.">
+              <span class="suggestion-icon">⌘</span>
+              <strong>Eksplorasi teknologi</strong>
+              <small>Kenali kemampuan AI lebih jauh</small>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -311,58 +853,152 @@
         <div class="input-row">
           <textarea
             id="messageInput"
-            placeholder="Tulis pesan kamu di sini..."
+            placeholder="Tanyakan apa saja kepada Receipt AI..."
             rows="1"
+            aria-label="Tulis pesan"
             required
           ></textarea>
-          <button class="send" id="sendButton" type="submit">Kirim ↑</button>
+
+          <button class="send" id="sendButton" type="submit" aria-label="Kirim pesan">
+            ↑
+          </button>
         </div>
+
         <div class="hint">
-          Tekan Enter untuk mengirim · Shift + Enter untuk baris baru
+          <span>↵</span> Enter untuk mengirim
+          <span>·</span>
+          Shift + Enter untuk baris baru
         </div>
       </form>
+
     </main>
   </div>
 
   <script>
     const messagesElement = document.getElementById("messages");
-    const welcomeElement = document.getElementById("welcome");
     const chatForm = document.getElementById("chatForm");
     const messageInput = document.getElementById("messageInput");
     const sendButton = document.getElementById("sendButton");
     const newChatButton = document.getElementById("newChat");
 
-    // Endpoint chat FastAPI akan kita tambahkan pada langkah berikutnya.
+    const backendStatus = document.getElementById("backendStatus");
+    const sidebarDot = document.getElementById("sidebarDot");
+    const headerDot = document.getElementById("headerDot");
+    const headerStatus = document.getElementById("headerStatus");
+    const toast = document.getElementById("toast");
+
+    // Endpoint FastAPI yang sudah disiapkan.
     const API_URL = "http://localhost:8000/api/chat";
 
+    // Riwayat untuk mempertahankan konteks percakapan.
     const conversation = [];
 
-    function addMessage(role, content) {
-      if (welcomeElement) {
-        welcomeElement.remove();
-      }
+    let isSending = false;
+    let toastTimeout;
 
-      const bubble = document.createElement("div");
-      bubble.className = `message ${role}`;
-      bubble.textContent = content;
-
-      messagesElement.appendChild(bubble);
-      messagesElement.scrollTop = messagesElement.scrollHeight;
-
-      return bubble;
+    function setConnectionStatus(online) {
+      backendStatus.textContent = online ? "Connected" : "Not checked";
+      sidebarDot.classList.toggle("online", online);
+      headerDot.classList.toggle("online", online);
+      headerStatus.textContent = online ? "System Ready" : "AI Assistant";
     }
 
-    async function sendMessage(message) {
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.remove("hidden");
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3000);
+    }
+
+    function scrollToBottom() {
+      messagesElement.scrollTop = messagesElement.scrollHeight;
+    }
+
+    function createMessage(role, content, options = {}) {
+      const row = document.createElement("div");
+      const isUser = role === "user";
+
+      row.className = `message-row ${isUser ? "user-row" : "ai-row"}`;
+
+      const avatar = document.createElement("div");
+      avatar.className = `avatar ${isUser ? "" : "ai-avatar"}`;
+      avatar.textContent = isUser ? "●" : "✳";
+      avatar.setAttribute("aria-hidden", "true");
+
+      const contentBox = document.createElement("div");
+      contentBox.className = "message-content";
+
+      const meta = document.createElement("div");
+      meta.className = "message-meta";
+      meta.textContent = isUser ? "Kamu" : "Receipt AI";
+
+      const bubble = document.createElement("div");
+      bubble.className = "message";
+
+      if (options.error) {
+        bubble.classList.add("error-message");
+      }
+
+      if (options.typing) {
+        bubble.setAttribute("aria-label", "AI sedang berpikir");
+
+        const typing = document.createElement("div");
+        typing.className = "typing";
+
+        for (let i = 0; i < 3; i++) {
+          typing.appendChild(document.createElement("span"));
+        }
+
+        bubble.appendChild(typing);
+      } else {
+        // Gunakan textContent agar teks respons tidak dieksekusi sebagai HTML.
+        bubble.textContent = content;
+      }
+
+      contentBox.append(meta, bubble);
+
+      if (isUser) {
+        row.append(contentBox, avatar);
+      } else {
+        row.append(avatar, contentBox);
+      }
+
+      messagesElement.appendChild(row);
+      scrollToBottom();
+
+      return { row, bubble, meta };
+    }
+
+    function removeWelcome() {
+      const welcome = document.getElementById("welcome");
+      if (welcome) welcome.remove();
+    }
+
+    async function sendMessage(rawMessage) {
+      const message = rawMessage.trim();
+
+      if (!message || isSending) return;
+
+      removeWelcome();
+
       conversation.push({
         role: "user",
         content: message
       });
 
-      addMessage("user", message);
+      createMessage("user", message);
 
-      const assistantBubble = addMessage("assistant", "Sedang berpikir...");
+      const assistant = createMessage("assistant", "", {
+        typing: true
+      });
+
+      isSending = true;
       sendButton.disabled = true;
       messageInput.disabled = true;
+      headerStatus.textContent = "AI sedang berpikir...";
 
       try {
         const response = await fetch(API_URL, {
@@ -376,70 +1012,137 @@
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
+          let detail = "";
+
+          try {
+            const errorData = await response.json();
+            detail = errorData.detail || errorData.message || "";
+          } catch {
+            detail = await response.text();
+          }
+
           throw new Error(
-            `HTTP ${response.status}: ${errorText || "Permintaan gagal"}`
+            `HTTP ${response.status}` +
+            (detail ? `: ${detail}` : "")
           );
         }
 
         const data = await response.json();
+
+        // Sesuaikan dengan format respons endpoint FastAPI.
         const answer = data.reply;
 
-        if (typeof answer !== "string") {
-          throw new Error("Format jawaban dari backend tidak sesuai.");
+        if (typeof answer !== "string" || !answer.trim()) {
+          throw new Error(
+            "Respons backend tidak memiliki field 'reply' berupa teks."
+          );
         }
 
-        assistantBubble.textContent = answer;
+        assistant.bubble.textContent = answer;
 
         conversation.push({
           role: "assistant",
           content: answer
         });
-      } catch (error) {
-        assistantBubble.textContent =
-          "Maaf, pesan belum bisa diproses.\n" +
-          error.message +
-          "\n\nPastikan backend FastAPI berjalan dan endpoint chat sudah ditambahkan.";
 
-        console.error("Chat error:", error);
+        setConnectionStatus(true);
+      } catch (error) {
+        // Pesan user yang gagal diproses tidak disimpan dalam konteks
+        // yang akan dikirim ulang agar riwayat tetap konsisten.
+        if (
+          conversation.length > 0 &&
+          conversation[conversation.length - 1].role === "user"
+        ) {
+          conversation.pop();
+        }
+
+        assistant.bubble.classList.add("error-message");
+        assistant.bubble.textContent =
+          "Maaf, pesanmu belum berhasil diproses.\n\n" +
+          error.message +
+          "\n\nPeriksa apakah FastAPI berjalan di port 8000, " +
+          "endpoint /api/chat tersedia, dan LM Studio aktif.";
+
+        console.error("Receipt AI error:", error);
+        showToast("Pesan gagal diproses. Periksa koneksi backend.");
       } finally {
+        isSending = false;
         sendButton.disabled = false;
         messageInput.disabled = false;
+
+        headerStatus.textContent = "AI Assistant";
         messageInput.focus();
-        messagesElement.scrollTop = messagesElement.scrollHeight;
+        scrollToBottom();
       }
     }
 
     chatForm.addEventListener("submit", async (event) => {
       event.preventDefault();
 
+      if (isSending) return;
+
       const message = messageInput.value.trim();
-      if (!message || sendButton.disabled) return;
+      if (!message) return;
 
       messageInput.value = "";
+      messageInput.style.height = "auto";
+
       await sendMessage(message);
     });
 
+    // Enter mengirim pesan, Shift+Enter membuat baris baru.
     messageInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && !event.shiftKey) {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
         event.preventDefault();
         chatForm.requestSubmit();
       }
     });
 
+    // Input otomatis bertambah tinggi mengikuti isi teks.
+    messageInput.addEventListener("input", () => {
+      messageInput.style.height = "auto";
+      messageInput.style.height =
+        Math.min(messageInput.scrollHeight, 130) + "px";
+    });
+
+    // Prompt rekomendasi langsung masuk ke chat.
+    document.querySelectorAll(".suggestion").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (isSending) return;
+
+        messageInput.value = button.dataset.prompt || "";
+        messageInput.dispatchEvent(new Event("input"));
+        chatForm.requestSubmit();
+      });
+    });
+
+    // Memulai percakapan baru.
     newChatButton.addEventListener("click", () => {
+      if (isSending) {
+        showToast("Tunggu sampai AI selesai menjawab.");
+        return;
+      }
+
       conversation.length = 0;
+
       messagesElement.innerHTML = `
         <div class="welcome" id="welcome">
-          <div class="emoji">💬</div>
-          <h2>Obrolan baru!</h2>
-          <p>Kirim pertanyaan untuk memulai percakapan.</p>
+          <div class="welcome-orb">✳</div>
+          <div class="eyebrow">NEW CONVERSATION</div>
+          <h2>Siap untuk <span class="gradient-text">memulai lagi?</span></h2>
+          <p>Obrolan baru sudah siap. Apa yang ingin kamu bahas sekarang?</p>
         </div>
       `;
 
       messageInput.value = "";
+      messageInput.style.height = "auto";
       messageInput.focus();
+      showToast("Percakapan baru dimulai.");
     });
+
+    // Status awal bersifat belum diverifikasi.
+    setConnectionStatus(false);
   </script>
 </body>
 </html>
+```
